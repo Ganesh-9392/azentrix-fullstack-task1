@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
-
+const authRoutes = require('./routes/auth');
 const app = express();
 
 app.use(cors({
@@ -15,6 +15,7 @@ mongoose.connect(process.env.MONGO_URI)
   .catch((err) => console.log('MongoDB Error:', err));
 
 app.use('/api/transactions', require('./routes/transactions'));
+app.use('/api/auth', require('./routes/auth'));
 
 app.get('/', (req, res) => {
   res.json({ message: 'Budget Tracker API is running!' });

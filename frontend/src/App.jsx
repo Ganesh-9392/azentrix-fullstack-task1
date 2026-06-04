@@ -33,7 +33,10 @@ export default function App() {
     description: "",
     date: "",
   });
-  const [editId, setEditId] = useState(null);
+  
+ 
+const [search, setSearch] = useState("");
+const [editId, setEditId] = useState(null);
 
   useEffect(() => {
     fetchTransactions();
@@ -91,14 +94,20 @@ export default function App() {
 
   const categories = [...new Set(transactions.map((t) => t.category))];
   const pieData = {
-    labels: categories,
-    datasets: [{
-      data: categories.map((cat) =>
-        transactions.filter((t) => t.category === cat).reduce((sum, t) => sum + t.amount, 0)
-      ),
-      backgroundColor: ["#4f46e5","#22c55e","#ef4444","#f59e0b","#06b6d4","#ec4899"],
-    }],
-  };
+  labels: categories,
+  datasets: [{
+    data: categories.map((cat) =>
+      transactions.filter((t) => t.category === cat).reduce((sum, t) => sum + t.amount, 0)
+    ),
+    backgroundColor: ["#4f46e5","#22c55e","#ef4444","#f59e0b","#06b6d4","#ec4899"],
+  }],
+};
+
+const filteredTransactions = transactions.filter(
+  (t) =>
+    t.category.toLowerCase().includes(search.toLowerCase()) ||
+    t.description.toLowerCase().includes(search.toLowerCase())
+);
 
   return (
     <div className="container">
@@ -163,8 +172,21 @@ export default function App() {
       {/* Transactions List */}
       <div className="card">
         <h2 style={{ marginBottom: "16px" }}>All Transactions</h2>
+        <input
+  type="text"
+  placeholder="🔍 Search transactions..."
+  value={search}
+  onChange={(e) => setSearch(e.target.value)}
+  style={{
+    width: "100%",
+    padding: "10px",
+    marginBottom: "15px",
+    borderRadius: "6px",
+    border: "1px solid #ddd",
+  }}
+/>
         {transactions.length === 0 ? <p>No transactions yet!</p> : (
-          transactions.map((t) => (
+          filteredTransactions.map((t) => (
             <div key={t._id} style={{
               display: "flex", justifyContent: "space-between", alignItems: "center",
               padding: "12px", borderRadius: "8px", marginBottom: "8px",
