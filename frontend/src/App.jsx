@@ -22,7 +22,7 @@ ChartJS.register(
   Legend
 );
 
-const API = "http://127.0.0.1:8000/api/transactions";
+const API = "https://azentrix-fullstack-task1-1.onrender.com/api/transactions";
 
 export default function App() {
   const [transactions, setTransactions] = useState([]);
